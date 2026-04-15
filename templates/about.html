@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Quantum Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <nav class="top-nav">
+            <div class="nav-brand">Quantum Calculator</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about" class="active">About</a>
+            </div>
+        </nav>
+
+        <section class="about-hero">
+            <div>
+                <span class="badge">Official Site</span>
+                <h1>Welcome to Quantum Calculator</h1>
+                <p>Experience a sleek calculator website built with Flask and Docker — designed to impress users and deploy anywhere.</p>
+            </div>
+            <div class="about-visual">
+                <div class="glass-box">
+                    <p>Fast, secure, and beautifully styled for modern web deployment.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-grid">
+            <article>
+                <h2>Why this app?</h2>
+                <p>This calculator is more than simple math. It is a polished experience with an elegant UI, thoughtful error handling, and Docker-ready deployment.</p>
+            </article>
+            <article>
+                <h2>Built for deployment</h2>
+                <p>The app uses Flask for web routing and Gunicorn inside Docker so this website is ready for production environments.</p>
+            </article>
+            <article>
+                <h2>What you get</h2>
+                <p>Responsive layout, animated hero sections, an official about page, and intuitive controls for everyone.</p>
+            </article>
+        </section>
+
+        <section class="feature-callout">
+            <h2>Move from demo to official launch</h2>
+            <p>Use this website as a deployable project showcase, build a container image, and launch it as a real online tool.</p>
+            <a href="/" class="primary-button">Return to Calculator</a>
+        </section>
+
+        <footer>
+            <p>Quantum Calculator — a polished Flask app built to deploy.</p>
+        </footer>
+    </div>
+</body>
+</html>

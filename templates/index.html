@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <nav class="top-nav">
+            <div class="nav-brand">Quantum Calculator</div>
+            <div class="nav-links">
+                <a href="#calculator">Home</a>
+                <a href="/about">About</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <div>
+                <span class="badge">Docker-ready Web App</span>
+                <h1>Quantum Calculator</h1>
+                <p>Turn simple math into an elegant online experience. Fast, responsive, and ready to deploy.</p>
+                <a href="#calculator" class="primary-button">Try the calculator</a>
+            </div>
+            <div class="hero-visual">
+                <div class="circle circle-one"></div>
+                <div class="circle circle-two"></div>
+                <div class="hero-card">
+                    <p>Effortless calculation with a clean design.</p>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="calculator-panel" id="calculator">
+                <div class="calculator-intro">
+                    <h2>Interactive Math in Your Browser</h2>
+                    <p>Enter values, choose an operation, and get instant results in a beautifully styled interface.</p>
+                </div>
+                <form method="post" class="calculator-form">
+                    <div class="field-group">
+                        <label for="num1">Number 1</label>
+                        <input id="num1" name="num1" type="number" step="any" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="num2">Number 2</label>
+                        <input id="num2" name="num2" type="number" step="any" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="operation">Operation</label>
+                        <select id="operation" name="operation" required>
+                            <option value="add">Add</option>
+                            <option value="sub">Subtract</option>
+                            <option value="mul">Multiply</option>
+                            <option value="div">Divide</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="primary-button">Calculate</button>
+                </form>
+
+                <div class="result-card">
+                    {% if result is not none %}
+                        <h3>Calculation Result</h3>
+                        <p class="result-value">{{ expression }} = <strong>{{ result }}</strong></p>
+                    {% elif error %}
+                        <h3>Oops!</h3>
+                        <p class="error-message">{{ error }}</p>
+                    {% else %}
+                        <h3>Ready when you are.</h3>
+                        <p>Submit numbers to see your result instantly.</p>
+                    {% endif %}
+                </div>
+            </section>
+
+            <section class="features-section">
+                <article>
+                    <h3>Modern UI</h3>
+                    <p>Responsive layout, glowing gradients, and polished buttons make the site feel professional.</p>
+                </article>
+                <article>
+                    <h3>Secure Deployment</h3>
+                    <p>Build a Docker image and deploy the app anywhere with confidence.</p>
+                </article>
+                <article>
+                    <h3>Smart Calculator</h3>
+                    <p>Handles addition, subtraction, multiplication, and safe division with friendly error messages.</p>
+                </article>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with Flask, Docker, and modern web styling for a memorable deployable experience.</p>
+        </footer>
+    </div>
+</body>
+</html>

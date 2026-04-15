@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Calculator</title>
+    <style>
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: radial-gradient(circle at top left, #5b5fd1, transparent 35%),
+                radial-gradient(circle at bottom right, #2dd7c7, transparent 35%),
+                #0f172a;
+    color: #e2e8f0;
+}
+
+.page-shell {
+    min-height: 100vh;
+    padding: 0 24px 48px;
+}
+
+/* Navigation */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    color: #e2e8f0;
+    position: sticky;
+    top: 0;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    margin: 0 -24px;
+    padding: 24px 24px;
+}
+
+.nav-brand {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #ffffff;
+}
+
+/* Badge */
+.badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.12);
+    color: #c7d2fe;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+}
+
+/* Hero & Main Sections */
+.hero, .about-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 32px;
+    align-items: center;
+    padding: 64px 0 48px;
+}
+
+.hero h1, .about-hero h1 {
+    margin: 0;
+    font-size: clamp(3rem, 4.5vw, 4.8rem);
+    line-height: 0.95;
+}
+
+.hero p, .about-hero p {
+    max-width: 560px;
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: #cbd5e1;
+}
+
+/* Buttons */
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 26px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #7c3aed 0%, #22d3ee 100%);
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(34, 211, 238, 0.22);
+}
+
+/* Visuals */
+.hero-visual, .about-visual {
+    position: relative;
+    min-height: 340px;
+}
+
+.about-visual {
+    min-height: 280px;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(32px);
+}
+
+.circle-one {
+    width: 220px;
+    height: 220px;
+    background: rgba(59, 130, 246, 0.65);
+    top: 0;
+    right: 16%;
+}
+
+.circle-two {
+    width: 260px;
+    height: 260px;
+    background: rgba(16, 185, 129, 0.45);
+    bottom: 0;
+    left: 18%;
+}
+
+.hero-card {
+    position: absolute;
+    inset: 30% 12% 12% auto;
+    min-height: 160px;
+    width: calc(100% - 2rem);
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 32px;
+    padding: 24px;
+    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.45);
+}
+
+.hero-card p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 1rem;
+}
+
+.glass-box {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+    border-radius: 28px;
+    padding: 28px;
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e2e8f0;
+    font-size: 1rem;
+    line-height: 1.8;
+    text-align: center;
+}
+
+/* Calculator Section */
+#calculator {
+    scroll-margin-top: 100px;
+}
+
+.calculator-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+    padding: 36px 0;
+}
+
+.calculator-intro h2 {
+    margin-top: 0;
+    font-size: 2.2rem;
+}
+
+.calculator-intro p {
+    color: #cbd5e1;
+    line-height: 1.8;
+}
+
+.calculator-form, .result-card {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 28px;
+    padding: 28px;
+    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.2);
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.field-group label {
+    color: #94a3b8;
+    font-size: 0.95rem;
+}
+
+.field-group input,
+.field-group select {
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(15, 23, 42, 0.8);
+    color: #f8fafc;
+    font-size: 1rem;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+}
+
+.result-card h3 {
+    margin-top: 0;
+}
+
+.result-value {
+    font-size: 1.8rem;
+    margin: 0.9rem 0 0;
+    color: #e2e8f0;
+}
+
+.error-message {
+    color: #fda4af;
+    font-weight: 700;
+}
+
+/* Features Section */
+.features-section {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.features-section article {
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 24px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.features-section article h3 {
+    margin-top: 0;
+}
+
+.features-section article p {
+    color: #cbd5e1;
+    line-height: 1.75;
+    margin: 0.8rem 0 0;
+}
+
+/* About Section */
+#about {
+    scroll-margin-top: 100px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+    margin-top: 48px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.about-grid article {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 24px;
+    padding: 28px;
+}
+
+.about-grid article h2 {
+    margin-top: 0;
+}
+
+.about-grid article p {
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.feature-callout {
+    margin-top: 40px;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.24), rgba(34, 211, 238, 0.12));
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 32px;
+    padding: 34px;
+    text-align: center;
+}
+
+.feature-callout h2 {
+    margin: 0 0 12px;
+    font-size: 2rem;
+}
+
+.feature-callout p {
+    color: #dbeafe;
+    line-height: 1.75;
+    max-width: 740px;
+    margin: 0 auto 22px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: #94a3b8;
+    padding-top: 28px;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+    margin-top: 48px;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+    .hero, .about-hero {
+        grid-template-columns: 1fr;
+    }
+    .calculator-panel {
+        grid-template-columns: 1fr;
+    }
+    .features-section, .about-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-card {
+        inset: auto 0 0 0;
+        width: 100%;
+        margin-top: 24px;
+    }
+    .nav-links {
+        gap: 12px;
+        font-size: 0.9rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <!-- Navigation -->
+        <nav class="top-nav">
+            <div class="nav-brand">Quantum Calculator</div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#calculator">Calculator</a>
+                <a href="#about">About</a>
+            </div>
+        </nav>
+
+        <!-- Home Hero Section -->
+        <section id="home">
+            <header class="hero">
+                <div>
+                    <span class="badge">Docker-ready Web App</span>
+                    <h1>Quantum Calculator</h1>
+                    <p>Turn simple math into an elegant online experience. Fast, responsive, and ready to deploy.</p>
+                    <a href="#calculator" class="primary-button">Try the calculator</a>
+                </div>
+                <div class="hero-visual">
+                    <div class="circle circle-one"></div>
+                    <div class="circle circle-two"></div>
+                    <div class="hero-card">
+                        <p>Effortless calculation with a clean design.</p>
+                    </div>
+                </div>
+            </header>
+        </section>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Calculator Section -->
+            <section class="calculator-panel" id="calculator">
+                <div class="calculator-intro">
+                    <h2>Interactive Math in Your Browser</h2>
+                    <p>Enter values, choose an operation, and get instant results in a beautifully styled interface.</p>
+                </div>
+                <div>
+                    <form method="post" class="calculator-form">
+                        <div class="field-group">
+                            <label for="num1">Number 1</label>
+                            <input id="num1" name="num1" type="number" step="any" required>
+                        </div>
+                        <div class="field-group">
+                            <label for="num2">Number 2</label>
+                            <input id="num2" name="num2" type="number" step="any" required>
+                        </div>
+                        <div class="field-group">
+                            <label for="operation">Operation</label>
+                            <select id="operation" name="operation" required>
+                                <option value="add">Add</option>
+                                <option value="sub">Subtract</option>
+                                <option value="mul">Multiply</option>
+                                <option value="div">Divide</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="primary-button">Calculate</button>
+                    </form>
+                    <div class="result-card">
+                        {% if result is not none %}
+                            <h3>Calculation Result</h3>
+                            <p class="result-value">{{ expression }} = <strong>{{ result }}</strong></p>
+                        {% elif error %}
+                            <h3>Oops!</h3>
+                            <p class="error-message">{{ error }}</p>
+                        {% else %}
+                            <h3>Ready when you are.</h3>
+                            <p>Submit numbers to see your result instantly.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <article>
+                    <h3>Modern UI</h3>
+                    <p>Responsive layout, glowing gradients, and polished buttons make the site feel professional.</p>
+                </article>
+                <article>
+                    <h3>Secure Deployment</h3>
+                    <p>Build a Docker image and deploy the app anywhere with confidence.</p>
+                </article>
+                <article>
+                    <h3>Smart Calculator</h3>
+                    <p>Handles addition, subtraction, multiplication, and safe division with friendly error messages.</p>
+                </article>
+            </section>
+
+            <!-- About Section -->
+            <section id="about">
+                <header class="about-hero">
+                    <div>
+                        <span class="badge">Official Site</span>
+                        <h1>Welcome to Quantum Calculator</h1>
+                        <p>Experience a sleek calculator website built with Flask and Docker — designed to impress users and deploy anywhere.</p>
+                    </div>
+                    <div class="about-visual">
+                        <div class="glass-box">
+                            <p>Fast, secure, and beautifully styled for modern web deployment.</p>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="about-grid">
+                    <article>
+                        <h2>Why this app?</h2>
+                        <p>This calculator is more than simple math. It is a polished experience with an elegant UI, thoughtful error handling, and Docker-ready deployment.</p>
+                    </article>
+                    <article>
+                        <h2>Built for deployment</h2>
+                        <p>The app uses Flask for web routing and Gunicorn inside Docker so this website is ready for production environments.</p>
+                    </article>
+                    <article>
+                        <h2>What you get</h2>
+                        <p>Responsive layout, animated hero sections, an official about page, and intuitive controls for everyone.</p>
+                    </article>
+                </div>
+
+                <div class="feature-callout">
+                    <h2>Move from demo to official launch</h2>
+                    <p>Use this website as a deployable project showcase, build a container image, and launch it as a real online tool.</p>
+                    <a href="#calculator" class="primary-button">Back to Calculator</a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Quantum Calculator — a polished Flask app built to deploy.</p>
+        </footer>
+    </div>
+</body>
+</html>
